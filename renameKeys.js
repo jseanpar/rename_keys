@@ -1,6 +1,6 @@
-const config = require('./config');
+//const { config } = require('./config');
 
-function renameKey(o) {
+function renameKeysRecursive(o) {
 
     const build = {};
     let key;
@@ -13,17 +13,25 @@ function renameKey(o) {
     }
   
     if (Array.isArray(o)) {
-      return o.map(renameKey);
+      //return o.map(renameKeysRecursive());
     }
+
+    console.log('configa:', o);
   
     for (key in o) {
+      const config = o[2];
+      //console.log({ o })
+      console.log(JSON.stringify(o))
+
+      console.log('-->',config);
+
       exits = config.hasOwnProperty(key);
       destKey = exits === false ? key : config[key];
 
       value = o[key];
   
       if (typeof value === 'object') {
-        value = renameKey(value);
+        value = renameKeysRecursive(value);
       }
   
       build[destKey] = value;
@@ -32,5 +40,5 @@ function renameKey(o) {
   }
 
   module.exports = {
-      renameKey
+    renameKeysRecursive
   };
