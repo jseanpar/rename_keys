@@ -1,37 +1,35 @@
-const { renameKeysRecursive } = require('./renameKeys');
+//const { config } = require('./config');
 
+function renameKeysRecursive(o) {
+  const build = {};
+  let key;
+  let destKey;
+  let exists;
+  let value;
 
-  let o = [
-    {
-        "codigo": 1,
-        "id": 1,
-        "asistencia": [
-            {
-                "asistencia": 58,
-            }
-        ],
-        "asistencia_virtual": {
-            "porcentaje": 55
-        },
-    },
-    {
-        "id": 2,
-        "asistencia": [
-            {
-                "asistencia": 78,
-            }
-        ],
-        "asistencia_virtual": {
-            "porcentaje": 55
-        },
-    },
-  ]; 
+  if (o === null || typeof o !== 'object') {
+    return o;
+  }
 
- const config = {
-    asistencia: 'attendance',
-    asistencia_virtual: 'virtual_attendance',
+  if (Array.isArray(o)) {
+    return o.map(renameKeysRecursive);
+  }
+
+  for (key in o) {
+    exists = global.config.hasOwnProperty(key);
+    destKey = exists === false ? key : global.config[key];
+
+    value = o[key];
+
+    if (typeof value === 'object') {
+      value = renameKeysRecursive(value);
+    }
+
+    build[destKey] = value;
+  }
+  return build;
+}
+
+module.exports = {
+  renameKeysRecursive
 };
-   o.push({config})
-  //o.map((e) => { return e.config = config })
-  
-  console.log(JSON.stringify(renameKeysRecursive(o)));

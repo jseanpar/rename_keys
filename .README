@@ -1,0 +1,84 @@
+# rename-keys-recursive [![NPM version](https://badge.fury.io/js/rename-keys-recursive.png)](http://badge.fury.io/js/rename-keys-recursive)
+
+Modify the names of the keys of objects and array recursively
+
+## Usage
+
+```js
+const { renameKeysRecursive } = require('rename-keys-recursive');
+
+let o = [
+    {
+        "codigo": 1,
+        "id": 1,
+        "asistencia": [
+            {
+                "asistencia": 58,
+            }
+        ],
+        "asistencia_virtual": {
+            "porcentaje": 55
+        },
+    },
+    {
+        "id": 2,
+        "asistencia": [
+            {
+                "asistencia": 78,
+            }
+        ],
+        "asistencia_virtual": {
+            "porcentaje": 55
+        },
+    },
+]; 
+
+//replace key asistencia for attendance, codigo for key code
+global.config = {
+    asistencia: 'attendance',
+    codigo: 'code'
+}
+
+const resp = renameKeysRecursive(o);
+
+console.log(JSON.stringify(resp));
+```
+
+## Return output object
+```js
+[
+    {
+        "code": 1,
+        "id": 1,
+        "attendance": [
+            {
+                "attendance": 58,
+            }
+        ],
+        "asistencia_virtual": {
+            "porcentaje": 55
+        },
+    },
+    {
+        "id": 2,
+        "attendance": [
+            {
+                "attendance": 78,
+            }
+        ],
+        "asistencia_virtual": {
+            "porcentaje": 55
+        },
+    },
+]; 
+
+```
+
+## Authors
+Jose Rubilar
+
+## Licence
+Copyright (c) 2016, Jose Rubilar. Released under the MIT license
+
+## Acknowledgments
+Thanks to [Team of PDV](https://github.com/jseanpar/rename_keys/) for encouraging me and supporting me to carry out this development.
